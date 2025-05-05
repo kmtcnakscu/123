@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church E-Library</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .header-bg {
+            background-image: url('header-bg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        header h1 {
+            font-family: 'Playfair Display', serif;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding-top: 10px;
+        }
+        .list-group-item {
+            padding: 8px 15px;
+        }
+        .book-card {
+            margin-bottom: 10px;
+        }
+        .logo-img {
+            max-width: 60px;
+            height: 60px;
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .navbar-nav .nav-link {
+            padding: 10px 15px;
+        }
+        .book-card .card {
+            transition: transform 0.2s;
+        }
+        .book-card .card:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            padding: 15px 0;
+            text-align: center;
+        }
+        .book-title {
+            display: flex;
+            align-items: center;
+        }
+        .book-title i {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        .author-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .author-info i {
+            margin-right: 5px;
+            color: #6c757d;
+        }
+        .pagination-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        @media (max-width: 767.98px) {
+            header .d-flex {
+                flex-direction: column;
+            }
+            header .logo-img {
+                margin-bottom: 10px;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+            .sidebar {
+                min-height: auto;
+                padding: 10px;
+            }
+            .book-card {
+                margin-bottom: 15px;
+            }
+            .navbar-collapse {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 250px;
+                height: 100%;
+                background-color: #f8f9fa;
+                z-index: 1050;
+                padding: 20px;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .navbar-collapse.show {
+                transform: translateX(0);
+            }
+            .close-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <span class="close-btn d-md-none" onclick="$('#navbarNav').collapse('hide')">×</span>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">E-Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#contactModal">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header-bg text-white text-center py-3">
+        <div class="d-flex justify-content-center align-items-center">
+            <img src="logo.png" alt="Church E-Library Logo" class="logo-img mr-3">
+            <h1 class="mb-0">Kmtc Nakuru Cu E-Library</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <div class="list-group mt-2">
+                    <a href="#" class="list-group-item list-group-item-action active" data-category="all">All</a>
+                    <!-- Categories will be dynamically added here -->
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="input-group mt-2 mb-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search books...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="bookList" class="row">
+                    <!-- Books will be dynamically added here -->
+                </div>
+                <div id="pagination" class="pagination-container">
+                    <!-- Pagination controls will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white">
+        <p>© 2025 Kmtc Nakuru Cu Powered by Media Ministry</p>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" rows="4" required></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="alert('Form submission is not implemented in this demo.')">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let books = [];
+        let selectedCategory = 'all';
+        let searchTerm = '';
+        let currentPage = 1;
+        const booksPerPage = 9;
+
+        fetch('books.json')
+            .then(response => response.json())
+            .then(data => {
+                books = data;
+                const categories = [...new Set(data.map(book => book.category))];
+                categories.forEach(category => {
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    a.className = 'list-group-item list-group-item-action';
+                    a.dataset.category = category;
+                    a.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    document.querySelector('.list-group').appendChild(a);
+                });
+                filterBooks();
+            })
+            .catch(error => console.error('Error loading books:', error));
+
+        document.querySelector('.list-group').addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                document.querySelector('.list-group .active').classList.remove('active');
+                e.target.classList.add('active');
+                selectedCategory = e.target.dataset.category;
+                currentPage = 1; // Reset to first page on category change
+                filterBooks();
+            }
+        });
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            currentPage = 1; // Reset to first page on search
+            filterBooks();
+        });
+
+        document.getElementById('searchButton').addEventListener('click', () => {
+            currentPage = 1; // Reset to first page on search
+            filterBooks();
+        });
+
+        document.getElementById('pagination').addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && e.target.dataset.page) {
+                currentPage = parseInt(e.target.dataset.page);
+                filterBooks();
+            }
+        });
+
+        function filterBooks() {
+            const filtered = books.filter(book =>
+                (selectedCategory === 'all' || book.category === selectedCategory) &&
+                book.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            const totalPages = Math.ceil(filtered.length / booksPerPage);
+            const start = (currentPage - 1) * booksPerPage;
+            const end = start + booksPerPage;
+            const paginatedBooks = filtered.slice(start, end);
+            displayBooks(paginatedBooks);
+            renderPagination(totalPages);
+        }
+
+        function displayBooks(books) {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+            books.forEach(book => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-sm-6 book-card';
+                col.innerHTML = `
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title book-title">
+                                <i class="fas fa-book"></i> ${book.title}
+                            </h5>
+                            <div class="author-info">
+                                <i class="fas fa-user"></i> ${book.author || 'Unknown Author'}
+                            </div>
+                            <a href="reader.html?file=${book.file}" target="_blank" class="btn btn-primary btn-sm mt-2"><i class="fas fa-book-open"></i> Read Online</a>
+                            <a href="${book.file}" download class="btn btn-secondary btn-sm mt-2"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    </div>
+                `;
+                bookList.appendChild(col);
+            });
+        }
+
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            const ul = document.createElement('ul');
+            ul.className = 'pagination';
+
+            // First page
+            ul.innerHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="1">1</a>
+                </li>
+            `;
+
+            // Left ellipsis
+            if (currentPage > 3) {
+                ul.innerHTML += `
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                `;
+            }
+
+            // Previous page
+            if (currentPage > 2) {
+                ul.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="${currentPage - 1}">${currentPage - 1}</a>
+                    </li>
+                `;
+            }
+
+            // Current page
+            if (currentPage !== 1 && currentPage !== totalPages) {
+                ul.innerHTML += `
+                    <li class="page-item active">
+                        <a class="page-link" href="#" data-page="${currentPage}">${currentPage}</a>
+                    </li>
+                `;
+            }
+
+            // Next page
+            if (currentPage < totalPages - 1) {
+                ul.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" data-page="${currentPage + 1}">${currentPage + 1}</a>
+                    </li>
+                `;
+            }
+
+            // Right ellipsis
+            if (currentPage < totalPages - 2) {
+                ul.innerHTML += `
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                `;
+            }
+
+            // Last page
+            if (totalPages > 1) {
+                ul.innerHTML += `
+                    <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>
+                    </li>
+                `;
+            }
+
+            pagination.appendChild(ul);
+        }
+    </script>
+</body>
+</html>
